@@ -1,0 +1,142 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="custom-title">Detalles del Personaje</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Spinner de carga -->
+  <ng-container *ngIf="loading">
+    <div class="ion-text-center ion-padding">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando personaje...</p>
+    </div>
+  </ng-container>
+
+  <!-- Detalles cuando ya cargó -->
+  <ng-container *ngIf="!loading && character; else noDataTemplate">
+    
+    <!-- Tarjeta de personaje -->
+    <ion-card class="centered-title">
+      <img [src]="character.image" [alt]="character.name" />
+      <ion-card-header>
+        <ion-card-title class="centered-title">{{ character.name }}</ion-card-title>
+        <ion-card-subtitle class="ion-margin-top">
+          <ion-chip color="primary" outline>
+            <ion-label>{{ character.species }}</ion-label>
+          </ion-chip>
+          <ion-chip color="secondary" outline>
+            <ion-label>{{ character.gender }}</ion-label>
+          </ion-chip>
+          <ion-chip
+            [color]="
+              character.status === 'Alive'
+                ? 'success'
+                : character.status === 'Dead'
+                ? 'danger'
+                : 'medium'
+            "
+            outline
+          >
+            <ion-label>{{ character.status }}</ion-label>
+          </ion-chip>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <!-- Información adicional -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Información adicional</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Origen</ion-label>
+          <ion-note slot="end">{{ character.origin.name }}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Ubicación</ion-label>
+          <ion-note slot="end">{{ character.location.name }}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Cantidad de episodios</ion-label>
+          <ion-note slot="end">{{ character.episode.length }}</ion-note>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Sección de comentarios -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Comentarios</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <!-- Comentarios existentes -->
+        <ng-container *ngIf="comentarios.length; else noCommentsTemplate">
+          <ion-card *ngFor="let c of comentarios" class="ion-margin-bottom">
+            <ion-card-content>
+              <p>{{ c.comentario }}</p>
+              <p class="ion-text-end ion-text-wrap" style="font-size: 0.8em; color: var(--ion-color-medium)">
+                {{ formatFecha(c.creadoEn) }}
+              </p>
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+        <ng-template #noCommentsTemplate>
+          <p class="ion-text-center ion-padding">No hay comentarios aún.</p>
+        </ng-template>
+
+        <!-- Escribir nuevo comentario -->
+        <ion-item class="ion-margin-top">
+          <ion-label position="floating">Nuevo comentario</ion-label>
+          <ion-textarea
+            [(ngModel)]="comment"
+            rows="4"
+            maxlength="200"
+            placeholder="Escribe tu comentario aquí..."
+          ></ion-textarea>
+        </ion-item>
+        <div class="ion-text-end ion-padding-end">
+          <ion-note>{{ comment.length }}/200</ion-note>
+        </div>
+
+        <!-- Botones de acción -->
+        <ion-button
+          expand="block"
+          fill="solid"
+          class="ion-margin-top"
+          [disabled]="!comment.trim()"
+          (click)="guardarComentario()"
+          aria-label="Guardar comentario"
+        >
+          Guardar comentario
+        </ion-button>
+
+        <ion-button
+          expand="block"
+          fill="outline"
+          color="medium"
+          class="ion-margin-top"
+          (click)="volverAlInicio()"
+          aria-label="Volver al inicio"
+        >
+          Volver al inicio
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+  </ng-container>
+
+  <!-- Cuando no se encuentra el personaje -->
+  <ng-template #noDataTemplate>
+    <div class="ion-text-center ion-padding">
+      <p>No se encontró información del personaje.</p>
+      <ion-button routerLink="/home" fill="solid" class="ion-margin-top" aria-label="Volver al inicio">
+        Volver al inicio
+      </ion-button>
+    </div>
+  </ng-template>
+
+</ion-content>

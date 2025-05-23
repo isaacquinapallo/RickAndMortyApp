@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Rick & Morty</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- 🔍 Buscador con ícono integrado -->
+  <ion-searchbar
+    [(ngModel)]="searchTerm"
+    placeholder="Buscar personaje por nombre..."
+    debounce="300"
+    (ionInput)="filterCharacters()"
+    showCancelButton="focus"
+  ></ion-searchbar>
+
+  <!-- Lista de sugerencias búsqueda parcial con imagen y ícono -->
+  <ion-list *ngIf="filteredCharacters.length > 0" style="max-height: 200px; overflow-y: auto;">
+    <ion-item
+      button
+      *ngFor="let c of filteredCharacters"
+      (click)="goToDetails(c.id)"
+    >
+      <ion-avatar slot="start">
+        <img [src]="c.image" alt="{{ c.name }}" />
+      </ion-avatar>
+      {{ c.name }}
+      <ion-icon slot="end" name="search-outline"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <!-- ⚠️ Error de búsqueda -->
+  <ion-text color="danger" *ngIf="searchError">
+    <p class="ion-padding">{{ searchError }}</p>
+  </ion-text>
+
+  <!-- ✅ Resultado buscado -->
+  <ion-card *ngIf="searchedCharacter" class="ion-text-center">
+    <img
+      [src]="searchedCharacter.image"
+      alt="{{ searchedCharacter.name }}"
+      style="width: 120px; height: 120px; margin: auto;"
+    />
+    <ion-card-header>
+      <ion-card-title>{{ searchedCharacter.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button expand="block" (click)="goToDetails(searchedCharacter.id)">
+        Ver detalles
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- 🧾 Lista de personajes -->
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        size="12"
+        size-md="6"
+        size-lg="3"
+        *ngFor="let character of characters"
+      >
+        <ion-card class="ion-text-center">
+          <img
+            [src]="character.image"
+            alt="Imagen de {{ character.name }}"
+            style="width: 120px; height: 120px; margin: auto;"
+          />
+          <ion-card-header>
+            <ion-card-title>{{ character.name }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-button expand="block" (click)="goToDetails(character.id)">
+              Ver detalles
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- 🔄 Infinite Scroll -->
+  <ion-infinite-scroll (ionInfinite)="loadCharacters($event)" threshold="100px">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Cargando más personajes...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
