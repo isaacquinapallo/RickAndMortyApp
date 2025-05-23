@@ -44,6 +44,8 @@ A continuación se muestran evidencias visuales del funcionamiento de la aplicac
 
 ### 💬 Comentarios agregados  
 ![IMG-20250522-WA0033](https://github.com/user-attachments/assets/94e3f1a2-1192-4822-96b2-fac605f6844f)
+![image](https://github.com/user-attachments/assets/f7f69433-0ded-4db0-88c5-6494ac808dd3)
+
 ![IMG-20250522-WA0031](https://github.com/user-attachments/assets/72dbeed9-52d6-4016-a3c9-e5f4803a6629)
 ![IMG-20250522-WA0030](https://github.com/user-attachments/assets/17ed71e2-8ad8-4717-8c4b-bf9177bb0ffe)
 
